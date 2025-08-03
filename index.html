@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculator</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      flex-direction: column;
+      background-color: rgb(181, 207, 230);
+    }
+    .calculator-box {
+      background-color: rgb(130, 127, 127);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    #result {
+      width: 260px;
+      border: 2px solid cyan;
+      border-radius: 15px;
+      font-size: 35px;
+      text-align: right;
+      padding: 10px;
+      background: white;
+      overflow-x: auto;
+    }
+    .buttons {
+      margin-top: 15px;
+      display: grid;
+      grid-template-columns: repeat(4, 60px);
+      gap: 10px;
+    }
+    button {
+      padding: 15px;
+      font-size: 20px;
+      border: 2px solid rgb(137, 245, 245);
+      border-radius: 15px;
+      background-color: darkgray;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    #clear-display {
+      background-color: red;
+    }
+    #delete {
+      background-color: red;
+    }
+    #equal {
+      background-color: green;
+    }
+    #sign {
+      background-color: rgb(110, 91, 91);
+    }
+    button:hover {
+      transform: scale(1.12);
+      background-color: cyan;
+      color: blue;
+    }
+    #sign:hover {
+      background-color: bisque;
+    }
+    #clear-display:hover {
+      background-color: rgb(182, 12, 12);
+    }
+    #delete:hover {
+      background-color: rgb(182, 12, 12);
+    }
+    #equal:hover {
+      background-color: rgb(74, 151, 74);
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator-box">
+    <div class="Calculator">
+      <div id="result">0</div>
+      <div class="buttons">
+        <button id="clear-display" data-value="C">AC</button>
+        <button id="delete" data-value="DEL">DE</button>
+        <button id="sign" data-value="%">%</button>
+        <button id="sign" data-value="/">/</button>
+
+        <button data-value="7">7</button>
+        <button data-value="8">8</button>
+        <button data-value="9">9</button>
+        <button id="sign" data-value=""></button>
+
+        <button data-value="4">4</button>
+        <button data-value="5">5</button>
+        <button data-value="6">6</button>
+        <button id="sign" data-value="-">-</button>
+
+        <button data-value="1">1</button>
+        <button data-value="2">2</button>
+        <button data-value="3">3</button>
+        <button id="sign" data-value="+">+</button>
+
+        <button data-value="0">0</button>
+        <button data-value="00">00</button> 
+        <button data-value=".">.</button>
+        <button id="equal" data-value="=">=</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('result');
+    const buttons = document.querySelectorAll('button');
+    const clearBtn = document.getElementById('clear-display');
+    const deleteBtn = document.getElementById('delete');
+    const equalBtn = document.getElementById('equal');
+
+    let expression = "";
+
+    buttons.forEach(button => {
+      const value = button.getAttribute('data-value');
+
+      if (!["C", "DEL", "="].includes(value)) {
+        button.addEventListener('click', () => {
+          if (display.innerText === "0" || display.innerText === "Error") {
+            display.innerText = value;
+          } else {
+            display.innerText += value;
+          }
+          expression = display.innerText;
+        });
+      }
+    });
+
+    clearBtn.addEventListener('click', () => {
+      expression = "";
+      display.innerText = "0";
+    });
+
+    deleteBtn.addEventListener('click', () => {
+      expression = display.innerText.slice(0, -1);
+      display.innerText = expression || "0";
+    });
+
+    equalBtn.addEventListener('click', () => {
+      try {
+        const result = eval(display.innerText.replace(/÷/g, '/').replace(/x/g, '*'));
+        display.innerText = result;
+      } catch {
+        display.innerText = "Error";
+      }
+    });
+  </script>
+</body>
+</html>
